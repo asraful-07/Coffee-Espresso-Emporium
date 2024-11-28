@@ -1,4 +1,6 @@
+import { data } from "autoprefixer";
 import React from "react";
+import Swal from "sweetalert2/dist/sweetalert2.js";
 
 const AddCoffee = () => {
   // Function to handle form submission
@@ -32,15 +34,26 @@ const AddCoffee = () => {
     // Clear the form fields after submission
     form.reset();
 
+    // send data to the server
+    fetch("http://localhost:5000/coffee", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(newCoffee),
+    })
+      .then((res) => res.json())
+      .then((data) => console.log(data));
+
     // Optionally, you can send `newCoffee` to an API or handle it as required
     // https://haircutinspiration.com/wp-content/uploads/Teen-with-High-Fade-and-Curly-Fringe.jpg
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen flex flex-col items-center">
+    <div className="bg-gray-100 my-24 min-h-screen flex flex-col items-center">
       {/* Back to Home Link */}
       <div className="w-full max-w-4xl mt-8">
-        <a href="/" className="text-blue-500 hover:underline">
+        <a href="/" className="text-black text-xl font-medium hover:underline">
           Back to home
         </a>
       </div>
@@ -162,7 +175,7 @@ const AddCoffee = () => {
           <div className="md:col-span-2">
             <button
               type="submit"
-              className="btn btn-primary bg-brown-500 hover:bg-brown-700 w-full"
+              className="btn btn-primary bg-[#d2b48c] text-black hover:bg-[#b09b7d] w-full"
             >
               Add Coffee
             </button>
