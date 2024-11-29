@@ -36,6 +36,9 @@ const CoffeeCard = ({ coffee, coffees, setCoffees }) => {
         <p className="text-gray-600 text-sm">Chef: {chef}</p>
         <p className="text-gray-600 text-sm">Category: {category}</p>
         <p className="font-semibold text-black mt-2">{price || "890 Taka"}</p>
+        <p className="font-semibold text-black mt-2">
+          {supplier || "890 Taka"}
+        </p>
       </div>
 
       {/* Action Buttons */}
