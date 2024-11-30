@@ -1,9 +1,9 @@
 import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-// import { AuthContext } from "./Provider/AuthProvider";
+import { AuthContext } from "../provaider/AuthProvider";
 
 const Register = () => {
-  //   const { handelRegister, manageProfile } = useContext(AuthContext);
+  const { handelRegister } = useContext(AuthContext);
   const [error, setError] = useState("");
 
   const handelSinUp = (e) => {
