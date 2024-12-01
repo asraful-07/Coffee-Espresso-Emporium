@@ -5,6 +5,7 @@ import {
   GoogleAuthProvider,
   signInWithEmailAndPassword,
   signInWithPopup,
+  updateProfile,
 } from "firebase/auth";
 
 // Create a Context
@@ -28,12 +29,20 @@ const AuthProvider = ({ children }) => {
     return signInWithPopup(auth, googleProvider);
   };
 
+  const manageProfile = (name, image) => {
+    return updateProfile(auth.currentUser, {
+      displayName: name,
+      photoURL: image,
+    });
+  };
+
   const value = {
     user,
     setUser,
     handelRegister,
     handleLogin,
     handleGoogleLogin,
+    manageProfile,
   };
 
   // Pass the value prop to the Provider

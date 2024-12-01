@@ -3,18 +3,20 @@ import { Link } from "react-router-dom";
 import { AuthContext } from "../provaider/AuthProvider";
 
 const Register = () => {
-  const { handelRegister } = useContext(AuthContext);
+  const { handelRegister, manageProfile } = useContext(AuthContext);
   const [error, setError] = useState("");
 
-  const handelSinUp = (e) => {
+  const handleSignUp = async (e) => {
     e.preventDefault();
     setError("");
-    const name = e.target.name.value;
-    const photoUrl = e.target.photoUrl.value;
-    const email = e.target.email.value;
-    const password = e.target.password.value;
-    const conPassword = e.target.conPassword.value;
+    const form = e.target;
+    const name = form.name.value;
+    const photoUrl = form.photoUrl.value;
+    const email = form.email.value;
+    const password = form.password.value;
+    const conPassword = form.conPassword.value;
 
+    // Validation
     if (password.length < 6) {
       setError("Password must contain at least 6 characters");
       return;
@@ -32,21 +34,47 @@ const Register = () => {
       return;
     }
 
-    handelRegister(email, password)
-      .then((res) => {
-        manageProfile(name, photoUrl);
-        console.log("Registration successful:", res);
-      })
-      .catch((err) => {
-        setError("Registration failed: " + err.message);
+    try {
+      // Register the user
+      const res = await handelRegister(email, password);
+      const user = res?.user;
+      const creationTime = user?.metadata?.creationTime; // Fetch creation time safely
+
+      // Manage profile
+      await manageProfile(name, photoUrl);
+      console.log("Registration successful:", res);
+
+      // Prepare user object
+      const newUser = { name, email, create: creationTime };
+
+      // Save user to the database
+      const response = await fetch("http://localhost:5000/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newUser),
       });
+
+      if (!response.ok) {
+        throw new Error("Failed to save user to the database");
+      }
+
+      const data = await response.json();
+      console.log("User created in DB:", data);
+
+      // Reset the form
+      form.reset();
+    } catch (err) {
+      setError("Registration failed: " + err.message);
+    }
   };
 
   return (
     <div className="hero">
       <div className="hero-content flex-col">
         <div className="card bg-base-100 w-full max-w-2xl shrink-0 shadow-2xl p-6">
-          <form onSubmit={handelSinUp} className="card-body">
+          <form onSubmit={handleSignUp} className="card-body">
             <h1 className="text-3xl font-semibold text-center mb-6">
               Register your account
             </h1>

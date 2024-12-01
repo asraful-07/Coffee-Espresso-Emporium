@@ -12,20 +12,48 @@ const SignIn = () => {
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
+    setError("");
     const email = e.target.email.value;
     const password = e.target.password.value;
 
     try {
-      await handleLogin(email, password);
+      const result = await handleLogin(email, password);
+      const lastSignInTime = result.user?.metadata?.lastSignInTime;
+
+      const loginInfo = { email, lastSignInTime };
+
+      // Send PATCH request to update user last login time
+      await fetch("http://localhost:5000/users", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(loginInfo),
+      });
+
       navigate(from, { replace: true });
     } catch (err) {
-      setError(err.message);
+      setError("Login failed: " + err.message);
     }
   };
 
   const handleGoogleLoginClick = async () => {
     try {
-      await handleGoogleLogin();
+      const result = await handleGoogleLogin();
+      const email = result.user?.email;
+      const lastSignInTime = result.user?.metadata?.lastSignInTime;
+
+      const loginInfo = { email, lastSignInTime };
+
+      // Update user info after Google login
+      await fetch("http://localhost:5000/users", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(loginInfo),
+      });
+
       navigate(from, { replace: true });
     } catch (err) {
       setError("Google login failed. Please try again.");
