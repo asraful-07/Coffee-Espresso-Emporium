@@ -22,38 +22,40 @@ const CoffeeCard = ({ coffee, coffees, setCoffees }) => {
   };
 
   return (
-    <div className="border border-gray-200 container mx-auto rounded-lg shadow-lg p-4 w-64 h-80 flex flex-col items-center bg-white">
-      {/* Coffee Image */}
-      <img
-        src={photo}
-        alt={name}
-        className="w-32 h-32 object-cover rounded-lg shadow-md"
-      />
+    <div className="container mx-auto">
+      <div className="border border-gray-200 rounded-lg shadow-lg p-4 w-64 h-80 flex flex-col items-center bg-white">
+        {/* Coffee Image */}
+        <img
+          src={photo}
+          alt={name}
+          className="w-32 h-32 object-cover rounded-lg shadow-md"
+        />
 
-      {/* Coffee Details */}
-      <div className="mt-4 text-center">
-        <h3 className="font-bold text-lg text-gray-800">{name}</h3>
-        <p className="text-gray-600 text-sm">Chef: {chef}</p>
-        <p className="text-gray-600 text-sm">Category: {category}</p>
-        <p className="font-semibold text-black mt-2">{price || "890 Taka"}</p>
-        <p className="font-semibold text-black mt-2">
-          {supplier || "890 Taka"}
-        </p>
-      </div>
+        {/* Coffee Details */}
+        <div className="mt-4 text-center">
+          <h3 className="font-bold text-lg text-gray-800">{name}</h3>
+          <p className="text-gray-600 text-sm">Chef: {chef}</p>
+          <p className="text-gray-600 text-sm">Category: {category}</p>
+          <p className="font-semibold text-black mt-2">{price || "890 Taka"}</p>
+          <p className="font-semibold text-black mt-2">
+            {supplier || "890 Taka"}
+          </p>
+        </div>
 
-      {/* Action Buttons */}
-      <div className="mt-auto flex justify-between w-full">
-        <Link to={`/updateCoffee/${_id}`}>
-          <button className="bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 py-2 rounded-md shadow-md flex items-center">
-            <span className="material-icons">edit</span>
+        {/* Action Buttons */}
+        <div className="mt-auto flex justify-between w-full">
+          <Link to={`/updateCoffee/${_id}`}>
+            <button className="bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 py-2 rounded-md shadow-md flex items-center">
+              <span className="material-icons">edit</span>
+            </button>
+          </Link>
+          <button
+            onClick={() => handleDelete(_id)}
+            className="bg-red-100 hover:bg-red-200 text-red-800 px-3 py-2 rounded-md shadow-md flex items-center"
+          >
+            <span className="material-icons">delete</span>
           </button>
-        </Link>
-        <button
-          onClick={() => handleDelete(_id)}
-          className="bg-red-100 hover:bg-red-200 text-red-800 px-3 py-2 rounded-md shadow-md flex items-center"
-        >
-          <span className="material-icons">delete</span>
-        </button>
+        </div>
       </div>
     </div>
   );

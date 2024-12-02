@@ -1,6 +1,4 @@
-import { data } from "autoprefixer";
 import React from "react";
-import Swal from "sweetalert2/dist/sweetalert2.js";
 
 const AddCoffee = () => {
   // Function to handle form submission
